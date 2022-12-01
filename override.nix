@@ -8,7 +8,14 @@ let
     inherit pkgs system nodejs;
   };
 
-  opencollective = import ../opencollective-postinstall/override.nix { inherit nodejs; };
+  opencollective-src = pkgs.fetchFromGitHub {
+    owner = "cidkidnix";
+    repo = "opencollective-postinstall";
+    rev = "c47321886e2e10ba03c806f36dea757dfa53fd1a";
+    sha256 = "sha256-o3ogi4CnpRjsCSWSrXsKBLlsKzeGN8PD05SovxIEULQ=";
+  };
+
+  opencollective = import "${opencollective-src}/override.nix" { inherit nodejs; };
 in
 nodePackages // {
   nodeDependencies = nodePackages.nodeDependencies.overrideAttrs (old: {
